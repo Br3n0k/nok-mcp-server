@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+venv/
+vendor/
+target/
+
+# nodejs
+package-lock.json
+
+# Build
+dist/
+build/
+*.exe
+*.dll
+*.so
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Plugins data
+plugins/*/data/
+plugins/*/cache/
+plugins/*/logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+*.cache
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temp
+tmp/
+temp/
+*.tmp 

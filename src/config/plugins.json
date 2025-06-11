@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "plugins": [
+    {
+      "id": "example-typescript",
+      "name": "Exemplo TypeScript",
+      "description": "Plugin de exemplo em TypeScript",
+      "language": "typescript",
+      "enabled": true,
+      "autostart": true,
+      "module": "./dist/plugins/typescript/example.js",
+      "tools": [
+        {
+          "name": "hello_world",
+          "description": "Cumprimentar o mundo ou uma pessoa específica",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Nome da pessoa para cumprimentar"
+              }
+            }
+          }
+        },
+        {
+          "name": "calculate",
+          "description": "Realizar operações matemáticas básicas",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "enum": ["add", "subtract", "multiply", "divide"],
+                "description": "Tipo de operação matemática"
+              },
+              "a": {
+                "type": "number",
+                "description": "Primeiro número"
+              },
+              "b": {
+                "type": "number",
+                "description": "Segundo número"
+              }
+            },
+            "required": ["operation", "a", "b"]
+          }
+        },
+        {
+          "name": "get_system_info",
+          "description": "Obter informações do sistema",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        {
+          "name": "generate_uuid",
+          "description": "Gerar um UUID único",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        },
+        {
+          "name": "current_time",
+          "description": "Obter a hora atual com formatação opcional",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "timezone": {
+                "type": "string",
+                "description": "Timezone (ex: America/Sao_Paulo)",
+                "default": "America/Sao_Paulo"
+              },
+              "format": {
+                "type": "string",
+                "enum": ["iso", "locale", "string"],
+                "description": "Formato da data/hora",
+                "default": "iso"
+              }
+            }
+          }
+        }
+      ],
+      "resources": [],
+      "config": {}
+    }
+  ],
+  "settings": {
+    "autoload": true,
+    "timeout": 30000,
+    "maxConcurrent": 10,
+    "retryAttempts": 3
+  }
+}

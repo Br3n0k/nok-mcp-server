@@ -1,0 +1,28 @@
+{
+  "plugins": [
+    {
+      "id": "web-dev",
+      "language": "typescript",
+      "module": "./plugins/typescript/web-dev.js",
+      "tools": ["create_component", "analyze_bundle"]
+    },
+    {
+      "id": "data-science",
+      "language": "python",
+      "command": "python plugins/python/ml_server.py",
+      "tools": ["analyze_data", "train_model", "predict"]
+    },
+    {
+      "id": "simple-cms",
+      "language": "php",
+      "endpoint": "http://localhost:8081/mcp-bridge.php",
+      "tools": ["manage_content", "user_auth", "database_ops"]
+    },
+    {
+      "id": "performance-ops", 
+      "language": "go",
+      "command": "./plugins/go/perf-server",
+      "tools": ["optimize_query", "cache_ops", "monitoring"]
+    }
+  ]
+} 
