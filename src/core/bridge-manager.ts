@@ -80,7 +80,7 @@ export class PluginBridge {
             const result = JSON.parse(output);
             resolve(result);
           } catch (error) {
-            reject(new Error(`Erro ao parsear saída JSON: ${error.message}\nSaída: ${output}`));
+            reject(new Error(`Erro ao parsear saída JSON: ${error instanceof Error ? error.message : String(error)}\nSaída: ${output}`));
           }
         } else {
           reject(new Error(`Processo terminou com código ${code}\nErro: ${errorOutput}`));

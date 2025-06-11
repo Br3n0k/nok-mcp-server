@@ -107,7 +107,7 @@ export class MCPServer {
           content: [
             {
               type: 'text',
-              text: `Erro: ${error.message}`
+              text: `Erro: ${error instanceof Error ? error.message : String(error)}`
             }
           ],
           isError: true

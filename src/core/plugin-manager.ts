@@ -280,7 +280,7 @@ export class PluginManager {
           const result = JSON.parse(data.toString());
           resolve(result);
         } catch (error) {
-          reject(new Error(`Erro ao parsear resposta Go: ${error.message}`));
+          reject(new Error(`Erro ao parsear resposta Go: ${error instanceof Error ? error.message : String(error)}`));
         }
       });
 

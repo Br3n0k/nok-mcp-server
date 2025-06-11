@@ -120,7 +120,7 @@ export const tools = {
         }]
       };
     } catch (error) {
-      throw new Error(`Erro ao obter hora atual: ${error.message}`);
+      throw new Error(`Erro ao obter hora atual: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 };
