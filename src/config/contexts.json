@@ -1,0 +1,180 @@
+{
+  "version": "1.0.0",
+  "universal": {
+    "contexts": {
+      "ts-web": {
+        "id": "ts-web",
+        "language": "typescript",
+        "name": "TypeScript Web",
+        "description": "Contexto universal para desenvolvimento web com TypeScript",
+        "templates": [
+          "react-component",
+          "api-endpoint",
+          "database-model",
+          "service-layer"
+        ],
+        "tools": [
+          "format-code",
+          "lint-code",
+          "test-unit",
+          "build-webpack"
+        ],
+        "patterns": [
+          "mvc",
+          "repository",
+          "service",
+          "factory"
+        ]
+      },
+      "py-data": {
+        "id": "py-data",
+        "language": "python",
+        "name": "Python Data Science",
+        "description": "Contexto universal para ciência de dados com Python",
+        "templates": [
+          "data-pipeline",
+          "ml-model",
+          "jupyter-notebook",
+          "data-visualization"
+        ],
+        "tools": [
+          "train-model",
+          "evaluate-model",
+          "preprocess-data",
+          "visualize-data"
+        ],
+        "patterns": [
+          "pipeline",
+          "feature-engineering",
+          "model-training",
+          "data-validation"
+        ]
+      },
+      "go-api": {
+        "id": "go-api",
+        "language": "go",
+        "name": "Go API Server",
+        "description": "Contexto universal para APIs em Go",
+        "templates": [
+          "rest-handler",
+          "grpc-service",
+          "middleware",
+          "database-connector"
+        ],
+        "tools": [
+          "generate-api",
+          "test-api",
+          "benchmark-api",
+          "document-api"
+        ],
+        "patterns": [
+          "clean-architecture",
+          "cqr",
+          "middleware-chain",
+          "repository"
+        ]
+      },
+      "php-cms": {
+        "id": "php-cms",
+        "language": "php",
+        "name": "PHP CMS",
+        "description": "Contexto universal para CMS em PHP",
+        "templates": [
+          "wordpress-plugin",
+          "laravel-module",
+          "symfony-bundle",
+          "drupal-module"
+        ],
+        "tools": [
+          "generate-crud",
+          "migrate-db",
+          "cache-clear",
+          "deploy-cms"
+        ],
+        "patterns": [
+          "mvc",
+          "repository",
+          "service",
+          "factory"
+        ]
+      }
+    },
+    "plugins": [
+      {
+        "id": "ts-web-tools",
+        "name": "TypeScript Web Tools",
+        "description": "Ferramentas para desenvolvimento web",
+        "language": "typescript",
+        "enabled": true,
+        "autostart": true,
+        "module": "./dist/plugins/typescript/web-tools.js",
+        "tools": [
+          {
+            "name": "format-code",
+            "description": "Formata código TypeScript/JavaScript"
+          },
+          {
+            "name": "lint-code",
+            "description": "Lint código TypeScript/JavaScript"
+          }
+        ]
+      },
+      {
+        "id": "py-data-tools",
+        "name": "Python Data Tools",
+        "description": "Ferramentas para ciência de dados",
+        "language": "python",
+        "enabled": true,
+        "autostart": true,
+        "command": "python plugins/python/data-tools/main.py",
+        "tools": [
+          {
+            "name": "train-model",
+            "description": "Treina modelo de ML"
+          },
+          {
+            "name": "evaluate-model",
+            "description": "Avalia modelo de ML"
+          }
+        ]
+      }
+    ]
+  },
+  "projects": {
+    "web-app": {
+      "id": "web-app",
+      "name": "Web Application",
+      "description": "Aplicação web moderna com React + Node.js",
+      "domain": "web",
+      "inherits": [
+        "ts-web"
+      ],
+      "plugins": [
+        "ts-web-tools"
+      ],
+      "config": {
+        "framework": "react",
+        "database": "postgresql",
+        "deployment": "docker"
+      }
+    },
+    "ml-pipeline": {
+      "id": "ml-pipeline",
+      "name": "ML Pipeline",
+      "description": "Pipeline de machine learning para análise de dados",
+      "domain": "data-science",
+      "inherits": [
+        "py-data"
+      ],
+      "plugins": [
+        "py-data-tools"
+      ],
+      "config": {
+        "framework": "pytorch",
+        "gpu": true,
+        "monitoring": "mlflow"
+      }
+    }
+  },
+  "active_project": "web-app"
+}

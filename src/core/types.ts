@@ -77,4 +77,33 @@ export interface TransportType {
 }
 
 export type SupportedLanguage = 'typescript' | 'python' | 'php' | 'go';
-export type TransportProtocol = 'stdio' | 'sse' | 'ws'; 
+export type TransportProtocol = 'stdio' | 'sse' | 'ws';
+
+export interface ProjectContext {
+  id: string;
+  name: string;
+  description: string;
+  domain: string; // web, mobile, data-science, devops, etc.
+  inherits: string[]; // Universal contexts to inherit
+  plugins: string[]; // Plugin IDs specific to this project
+  config: Record<string, any>;
+}
+
+export interface ContextConfig {
+  universal: {
+    contexts: Record<string, UniversalContext>;
+    plugins: Plugin[];
+  };
+  projects: Record<string, ProjectContext>;
+  active_project?: string;
+}
+
+export interface UniversalContext {
+  id: string;
+  language: SupportedLanguage;
+  name: string;
+  description: string;
+  templates: string[];
+  tools: string[];
+  patterns: string[];
+} 

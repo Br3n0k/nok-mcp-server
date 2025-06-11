@@ -12,16 +12,24 @@ import fastify, { FastifyInstance } from 'fastify';
 import chalk from 'chalk';
 import { ServerConfig } from './types.js';
 import { PluginManager } from './plugin-manager.js';
+import { ContextManager } from './context-manager.js';
 
 export class MCPServer {
   private server: Server;
   private fastifyServer?: FastifyInstance;
   private config: ServerConfig;
   private pluginManager: PluginManager;
+  private contextManager: ContextManager;
 
   constructor(config: ServerConfig) {
     this.config = config;
     this.pluginManager = config.pluginManager;
+    
+    // Inicializar Context Manager
+    this.contextManager = new ContextManager({
+      configPath: './src/config/contexts.json',
+      debug: config.debug
+    });
     
     // Inicializar servidor MCP
     this.server = new Server(
@@ -117,6 +125,17 @@ export class MCPServer {
   }
 
   async start(): Promise<void> {
+    // Carregar contextos antes de iniciar
+    await this.contextManager.loadConfig();
+
+    // Carregar plugins do contexto ativo
+    const availablePlugins = await this.contextManager.getAvailablePlugins();
+    for (const plugin of availablePlugins) {
+      if (plugin.enabled) {
+        await this.pluginManager.loadPlugin(plugin);
+      }
+    }
+
     switch (this.config.transport) {
       case 'stdio':
         await this.startStdio();
@@ -154,11 +173,13 @@ export class MCPServer {
     // Endpoint de saúde
     this.fastifyServer.get('/health', async () => {
       const plugins = this.pluginManager.getLoadedPlugins();
+      const { project } = await this.contextManager.getActiveContext();
       return {
         status: 'ok',
         server: this.config.name,
         version: this.config.version,
         plugins: plugins.length,
+        project: project?.name || 'none',
         uptime: process.uptime()
       };
     });
@@ -166,17 +187,43 @@ export class MCPServer {
     // Endpoint para listar plugins
     this.fastifyServer.get('/plugins', async () => {
       const plugins = this.pluginManager.getLoadedPlugins();
+      const { universal, project } = await this.contextManager.getActiveContext();
       return {
         plugins: plugins.map(plugin => ({
           id: plugin.id,
           name: plugin.name,
           language: plugin.language,
           enabled: plugin.enabled,
+          context: universal.find(ctx => ctx.tools.includes(plugin.id))?.name || 'project-specific',
           tools: plugin.tools.map(tool => ({
             name: tool.name,
             description: tool.description
           }))
-        }))
+        })),
+        active_project: project?.name,
+        universal_contexts: universal.map(ctx => ctx.name)
+      };
+    });
+
+    // Endpoint para listar contextos
+    this.fastifyServer.get('/contexts', async () => {
+      const { universal, project } = await this.contextManager.getActiveContext();
+      return {
+        universal: universal.map(ctx => ({
+          id: ctx.id,
+          name: ctx.name,
+          language: ctx.language,
+          templates: ctx.templates,
+          tools: ctx.tools,
+          patterns: ctx.patterns
+        })),
+        project: project ? {
+          id: project.id,
+          name: project.name,
+          domain: project.domain,
+          inherits: project.inherits,
+          config: project.config
+        } : null
       };
     });
 
