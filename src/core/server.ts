@@ -143,11 +143,7 @@ export class MCPServer {
 
   private async startSSE(): Promise<void> {
     this.fastifyServer = fastify({
-      logger: this.config.debug ? {
-        transport: {
-          target: 'pino-pretty'
-        }
-      } : false
+      logger: this.config.debug ? true : false
     });
 
     // Registrar CORS
@@ -164,6 +160,23 @@ export class MCPServer {
         version: this.config.version,
         plugins: plugins.length,
         uptime: process.uptime()
+      };
+    });
+
+    // Endpoint para listar plugins
+    this.fastifyServer.get('/plugins', async () => {
+      const plugins = this.pluginManager.getLoadedPlugins();
+      return {
+        plugins: plugins.map(plugin => ({
+          id: plugin.id,
+          name: plugin.name,
+          language: plugin.language,
+          enabled: plugin.enabled,
+          tools: plugin.tools.map(tool => ({
+            name: tool.name,
+            description: tool.description
+          }))
+        }))
       };
     });
 

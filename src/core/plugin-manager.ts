@@ -91,7 +91,11 @@ export class PluginManager {
 
     try {
       const modulePath = path.resolve(plugin.module);
-      const pluginModule = await import(modulePath);
+      // Convert Windows path to file URL for ES modules
+      const moduleUrl = process.platform === 'win32' 
+        ? `file:///${modulePath.replace(/\\/g, '/')}`
+        : `file://${modulePath}`;
+      const pluginModule = await import(moduleUrl);
       
       // Assumindo que o plugin exporta suas ferramentas
       if (pluginModule.tools) {
